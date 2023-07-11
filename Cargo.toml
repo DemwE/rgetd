@@ -1,11 +1,12 @@
 [package]
 name = "rget"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Mateusz Czarnecki (DemwE)"]
 description = "A simple CLI tool for downloading files from the internet."
 edition = "2021"
 
 [dependencies]
 clap = {version = "4.3.11", features = ["derive"]}
+indicatif = {version = "0.17.5", features = ["improved_unicode", "unicode-segmentation"]}
 reqwest = {version = "0.11.18", features = ["blocking", "json", "stream"]}
 
