@@ -11,10 +11,19 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Parse arguments
     let args = RgetArgs::parse();
 
+
     // get file name from url
-    let file_name = args.url.split("/").last().unwrap();
+    // check if argument -n or --name is used
+    let file_name = if args.name.is_some() {
+        args.name.unwrap()
+    } else {
+        args.url.split("/").last().unwrap().to_string()
+    };
+
+    println!("file name: {}", file_name);
+
     // make from argument full file name
-    let full_file_name = args.directory + "/" + file_name;
+    let full_file_name = args.directory + "/" + &*file_name;
     // Make file url
     let url = Url::parse(&*args.url)?;
 
