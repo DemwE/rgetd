@@ -1,0 +1,20 @@
+name: make relase
+
+on:
+  push:
+    branches:
+      - master
+      
+jobs:
+  build_app:
+    name: Build rget
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: cargo build
+      id: crate_metadata
+      run: 
+        cargo clean
+        cargo build
+        cargo build --release
+ 
