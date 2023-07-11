@@ -15,6 +15,7 @@ pub struct RgetArgs {
     #[clap(default_value = ".")]
     pub save_directory: String,
     // Save file name when argument in -n or --name is used
+    /// Save file name
     #[clap(short, long)]
     pub name: Option<String>,
 }
