@@ -1,6 +1,6 @@
 [package]
 name = "rget"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Mateusz Czarnecki (DemwE)"]
 description = "A simple CLI tool for downloading files from the internet."
 edition = "2021"

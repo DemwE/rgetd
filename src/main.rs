@@ -10,7 +10,6 @@ use std::io::{Read, Write};
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Parse arguments
     let args = RgetArgs::parse();
-    println!("{:?}", args);
 
     // get file name from url
     let file_name = args.url.split("/").last().unwrap();
@@ -29,7 +28,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         // Create progress bar
         let pb = ProgressBar::new(total_size);
-        pb.set_style(ProgressStyle::default_bar());
+        pb.set_style(ProgressStyle::with_template("[{elapsed_precise}] [{bar:40.cyan/blue}] {bytes}/{total_bytes} ({eta})")
+            .unwrap()
+            .progress_chars("#>-"));
 
         // Open file for writing | use full_file_name
         let mut file = File::create(&*full_file_name)?;
