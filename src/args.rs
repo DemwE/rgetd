@@ -13,7 +13,7 @@ pub struct RgetArgs {
     pub url: String,
     // Save directory for the file where default is current directory
     #[clap(default_value = ".")]
-    pub directory: String,
+    pub save_directory: String,
     // Save file name when argument in -n or --name is used
     #[clap(short, long)]
     pub name: Option<String>,

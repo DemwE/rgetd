@@ -23,7 +23,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("file name: {}", file_name);
 
     // make from argument full file name
-    let full_file_name = args.directory + "/" + &*file_name;
+    let full_file_name = args.save_directory + "/" + &*file_name;
     // Make file url
     let url = Url::parse(&*args.url)?;
 
