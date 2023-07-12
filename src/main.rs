@@ -5,7 +5,7 @@ use clap::Parser;
 use indicatif::{ProgressBar, ProgressStyle};
 use reqwest::Url;
 use std::fs::File;
-use std::io::{Read, Write};
+use std::io::{Read, Write, BufWriter};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Parse arguments
@@ -42,20 +42,23 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             .progress_chars("#>-"));
 
         // Open file for writing | use full_file_name
-        let mut file = File::create(&*full_file_name)?;
+        let file = File::create(&*full_file_name)?;
+        let mut buffered_file = BufWriter::new(file);
 
         // Read response in chunks and write to file with progress update
-        let mut buffer = [0; 8192]; // Buffer size of 8KB
+        let mut buffer = [0; 65536]; // Buffer size of 64KB
         let mut downloaded = 0;
         loop {
             let bytes_read = response.read(&mut buffer)?;
             if bytes_read == 0 {
                 break;
             }
-            file.write_all(&buffer[..bytes_read])?;
+            buffered_file.write_all(&buffer[..bytes_read])?;
             downloaded += bytes_read;
             pb.set_position(downloaded as u64);
         }
+
+        buffered_file.flush()?; // Flush the buffer to ensure all data is written to disk
 
         pb.finish_with_message("File downloaded successfully.");
     } else {
