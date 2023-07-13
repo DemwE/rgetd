@@ -7,3 +7,15 @@ rget is a simple command-line program written in Rust that allows you to downloa
 - [x] Progress bar
 - [ ] Downloading multiple files at once
 - [x] Own file name after download
+
+### How to build?
+
+```bash
+git clone https://github.com/DemwE/rget
+cd rget
+cargo build --release
+cp /target/release/rget .
+
+# if you want to install on your system
+cp rget /bin
+```
