@@ -6,8 +6,12 @@ use indicatif::{ProgressBar, ProgressStyle};
 use reqwest::Url;
 use std::fs::File;
 use std::io::{Read, Write, BufWriter};
+use termcolor::{Color, ColorChoice, ColorSpec, StandardStream, WriteColor};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
+    // Create stdout
+    let mut stdout = StandardStream::stdout(ColorChoice::Always);
+
     // Parse arguments
     let args = RgetArgs::parse();
 
@@ -19,8 +23,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     } else {
         args.url.split("/").last().unwrap().to_string()
     };
-
-    println!("file name: {}", file_name);
 
     // make from argument full file name
     let full_file_name = args.save_directory + "/" + &*file_name;
@@ -62,7 +64,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         pb.finish_with_message("File downloaded successfully.");
     } else {
+        stdout.set_color(ColorSpec::new().set_fg(Some(Color::Red))).unwrap();
         println!("Error while downloading file.");
+        stdout.set_color(ColorSpec::new().set_fg(None)).unwrap();
     }
 
     Ok(())
