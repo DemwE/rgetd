@@ -1,13 +1,15 @@
 [package]
 name = "rget"
-version = "0.1.3"
+version = "1.4.0"
 authors = ["Mateusz Czarnecki (DemwE)"]
 description = "A simple CLI tool for downloading files from the internet."
 edition = "2021"
 
 [dependencies]
 clap = {version = "4.3.11", features = ["derive"]}
+colorful = "0.2.2"
+directories = "5.0.1"
 indicatif = {version = "0.17.5", features = ["improved_unicode", "unicode-segmentation"]}
 reqwest = {version = "0.11.18", features = ["blocking", "json", "stream"]}
-termcolor = "1.2.0"
+toml = "0.7.6"
 
