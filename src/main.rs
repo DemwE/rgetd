@@ -1,4 +1,5 @@
 mod args;
+mod config;
 
 use args::RgetArgs;
 use clap::Parser;
@@ -6,15 +7,15 @@ use indicatif::{ProgressBar, ProgressStyle};
 use reqwest::Url;
 use std::fs::File;
 use std::io::{Read, Write, BufWriter};
-use termcolor::{Color, ColorChoice, ColorSpec, StandardStream, WriteColor};
+use colorful::Colorful;
+use colorful::Color;
+
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    // Create stdout
-    let mut stdout = StandardStream::stdout(ColorChoice::Always);
-
     // Parse arguments
     let args = RgetArgs::parse();
 
+    let conf = config::main();
 
     // get file name from url
     // check if argument -n or --name is used
@@ -41,7 +42,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         let pb = ProgressBar::new(total_size);
         pb.set_style(ProgressStyle::with_template("[{elapsed_precise}] [{bar:40.cyan/blue}] {bytes}/{total_bytes} | {binary_bytes_per_sec} | eta {eta} ")
             .unwrap()
-            .progress_chars("#>-"));
+            .progress_chars(conf["progress_bar_chars"].as_str().unwrap()));
 
         // Open file for writing | use full_file_name
         let file = File::create(&*full_file_name)?;
@@ -64,9 +65,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         pb.finish_with_message("File downloaded successfully.");
     } else {
-        stdout.set_color(ColorSpec::new().set_fg(Some(Color::Red))).unwrap();
-        println!("Error while downloading file.");
-        stdout.set_color(ColorSpec::new().set_fg(None)).unwrap();
+        println!("{}", "Error while downloading file.".color(Color::Red));
     }
 
     Ok(())
