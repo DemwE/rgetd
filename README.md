@@ -19,3 +19,5 @@ cp /target/release/rget .
 # if you want to install on your system
 cp rget /bin
 ```
+
+[default config.toml](https://gist.github.com/DemwE/6de199a9d2febee7bd88f6a148d7a57c)
