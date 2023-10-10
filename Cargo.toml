@@ -1,8 +1,12 @@
 [package]
-name = "rget"
+name = "rgetd"
 version = "1.4.1"
 authors = ["Mateusz Czarnecki (DemwE)"]
 description = "A simple CLI tool for downloading files from the internet."
+repository = "https://github.com/DemwE/rgetd"
+license = "GPL-3.0"
+readme = "README.md"
+categories = ["command-line-utilities"]
 edition = "2021"
 
 [dependencies]
