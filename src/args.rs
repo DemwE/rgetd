@@ -18,4 +18,7 @@ pub struct RgetArgs {
     /// Save file name
     #[clap(short, long)]
     pub name: Option<String>,
+    /// Activate debug mode
+    #[clap(short, long)]
+    pub debug: bool,
 }
