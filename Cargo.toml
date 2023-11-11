@@ -1,6 +1,6 @@
 [package]
 name = "rgetd"
-version = "1.4.1"
+version = "1.5.0"
 authors = ["Mateusz Czarnecki (DemwE)"]
 description = "A simple CLI tool for downloading files from the internet."
 repository = "https://github.com/DemwE/rgetd"
