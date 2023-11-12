@@ -2,7 +2,7 @@
 [![GitHub tag](https://img.shields.io/github/tag/DemwE/rget?include_prereleases=&sort=semver&color=blue)](https://github.com/DemwE/rget/releases/)
 [![License](https://img.shields.io/badge/License-GPL--3.0-blue)](#license)
 
-rgetd is a simple command-line program written in Rust that allows you to download files from a given URL. It utilizes the reqwest crate for making HTTP requests and indicatif crate for displaying a progress bar during the download process.
+rgetd is a simple command-line program written in Rust that allows you to download files from a given URL.
 
 ### To Do
 
@@ -10,16 +10,12 @@ rgetd is a simple command-line program written in Rust that allows you to downlo
 - [ ] Downloading multiple files at once
 - [x] Own file name after download
 
-### How to build?
+## Installation
 
-```bash
-git clone https://github.com/DemwE/rget
-cd rget
-cargo build --release
-cp /target/release/rget .
+1. Clone the repository or download the source code.
+2. Navigate to the project directory.
+3. Run the command `cargo build --release` to build the project.
 
-# if you want to install on your system
-cp rget /bin
-```
+#### or
 
-[default config.toml](https://gist.github.com/DemwE/6de199a9d2febee7bd88f6a148d7a57c)
+Via cargo: `cargo install rtiny`
