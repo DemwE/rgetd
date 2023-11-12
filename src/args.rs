@@ -8,7 +8,7 @@ use clap::{command, Parser};
 #[command(
 help_template = "{name} {version} {author-section} {about-with-newline} \n {all-args}"
 )]
-pub struct RgetArgs {
+pub struct Args {
     // Get the URL
     pub url: String,
     // Save directory for the file where default is current directory

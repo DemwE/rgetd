@@ -1,38 +1,61 @@
 use std::fs;
-use directories::BaseDirs;
-use log::{debug, info};
-use toml::Value;
+use std::path::PathBuf;
+use serde::{Serialize, Deserialize};
+use log::info;
 
+#[derive(Serialize, Deserialize, Default, Debug)]
+pub struct AppConfig {
+    pub progress_bar_chars: String,
+    pub progress_bar_style: String,
+}
 
-pub fn main() -> Value {
-    // Config directory
-    let config_dir = BaseDirs::new().unwrap().config_dir().to_str().unwrap().to_string();
-    let config_file_path = format!("{}/rget/config.toml", config_dir);
-    debug!("Config file path: {}", config_file_path);
+pub struct ConfigPath {
+    #[allow(dead_code)]
+    config_dir: PathBuf,
+    config_file: PathBuf,
+}
 
-    let default_config = "\
-    progress_bar_chars = '#>-'\n\
-    progress_bar_style = '[{elapsed_precise}] [{bar:40.cyan/blue}] {bytes}/{total_bytes} | {binary_bytes_per_sec} | eta {eta} '";
+impl ConfigPath {
+    pub fn new() -> Self {
+        let dir = dirs::config_dir().unwrap().join("rgend");
+        let file = dir.join("config.toml");
 
-    // Create config file if it doesn't exist
-    let config_file = std::fs::File::open(&*config_file_path);
-    debug!("Config file: {:?}", config_file);
-    if config_file.is_err() {
-        info!("Config file doesn't exist, creating one");
-        fs::create_dir_all(format!("{}/rget", config_dir)).unwrap();
-        fs::File::create(&*config_file_path).unwrap();
-        // Add default config to file
-        info!("Adding default config to file");
-        fs::write(config_file_path.clone(), default_config).unwrap();
+        ConfigPath {
+            config_dir: dir,
+            config_file: file,
+        }
     }
 
-    // Read config file
-    info!("Reading config file");
-    let conf_raw =  fs::read_to_string(config_file_path.clone()).unwrap();
-    debug!("Config file content: {}", conf_raw);
+    pub fn check(&self) {
+        if !self.config_file.exists() {
+            println!("Creating config file...");
 
-    // Parse config file
-    let conf: toml::Value = toml::from_str(&*conf_raw).unwrap();
+            fs::create_dir_all(self.config_file.parent().unwrap())
+                .expect("Failed to create directory");
 
-    return conf;
+            let default_config = AppConfig {
+                progress_bar_chars: "#>-".to_string(),
+                progress_bar_style: "[{elapsed_precise}] [{bar:40.cyan/blue}] {bytes}/{total_bytes} | {binary_bytes_per_sec} | eta {eta}".to_string(), // replace with your default config values
+            };
+
+            let toml = toml::to_string(&default_config).expect("Failed to serialize user");
+
+            info!("Writing default config file...");
+            fs::write(&self.config_file, toml).expect("Failed to create config file");
+
+            println!("Config file created at {:?}", self.config_file);
+        }
+    }
+
+    pub fn read(&self) -> AppConfig {
+        if !self.config_file.exists() {
+            self.check();
+        }
+
+        info!("Reading config file...");
+        let contents = fs::read_to_string(&self.config_file).expect("Failed to read config file");
+        let parsed_config: AppConfig = toml::from_str(&contents).expect("Failed to deserialize config file");
+
+        parsed_config
+    }
 }
